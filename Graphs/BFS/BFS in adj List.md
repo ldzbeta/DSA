@@ -1,4 +1,4 @@
-```
+```cpp
 void bfs(int start, const vector<vector<int>>& adjList, vector<bool>& visited) {
     queue<int> q;
     q.push(start);
