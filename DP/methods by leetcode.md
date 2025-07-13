@@ -19,8 +19,8 @@ Dynamic Programming (DP) problems often use **relaxation** to optimize solutions
 
 3. **Formula:**
    - For each node, the shortest path can be defined as:
-     \[
-     \text{dist}[v] = \min(\text{dist}[v], \text{dist}[u] + \text{weight}(u, v))
-     \]
+    `
+     dist[v] = min(dist[v], dist[u] + weight(u, v))
+     `
    - This relaxation step ensures the minimum path is found.
 
