@@ -49,3 +49,8 @@ DSA note plus models
 ### ⚙️ **Mistake Log**  
 - Track common bugs:  
   - Off-by-one, wrong loop condition, overflow, etc.
+
+---
+
+*** Resources ***
+- https://github.com/ashishps1/awesome-leetcode-resources?tab=readme-ov-file
