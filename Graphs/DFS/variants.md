@@ -1,4 +1,4 @@
-###1.using stack - adj list
+### 1.using stack - adj list
 ```cpp
 void DFSIterative(int start) {
         vector<bool> visited(V, false);
