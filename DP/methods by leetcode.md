@@ -1,3 +1,8 @@
+### Solving Method
+- start by finding recursive relation , take general case (eg: at the case of index i , generate from lower ones) - {Recursion uses top down approach}
+- store it by memoization
+- Tabulation : start from base case of recurstion iterate and add up; - use relation found from recursive case for that - { Tabulation uses bottom up approach }
+  
 ### **DP Problem: Relaxation and Optimization**
 Dynamic Programming (DP) problems often use **relaxation** to optimize solutions. The idea is to iteratively refine the solution by considering suboptimal results and adjusting them to achieve the desired minimum or maximum.
 
