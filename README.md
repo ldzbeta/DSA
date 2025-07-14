@@ -52,5 +52,5 @@ DSA note plus models
 
 ---
 
-### ** Resources **
+### **Resources**
 - https://github.com/ashishps1/awesome-leetcode-resources?tab=readme-ov-file
