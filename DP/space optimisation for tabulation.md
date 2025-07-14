@@ -1,5 +1,5 @@
 ### ✔️ Space Optimized Dynamic Programming
-
+## 1)
  we can observe that to compute the dp matrix, we are only ever using the cells from previous row and the current row. So, we don't really need to maintain the entire m x n matrix of dp. We can optimize the space usage by only keeping the current and previous rows.
 
 A common way in dp problems to optimize space from 2d dp is just to convert the dp matrix from m x n grid to 2 x n grid denoting the values for current and previous row. We can just overwrite the previous row and use the current row as the previous row for next iteration. We can simply alternate between these rows using the & (AND) operator as can be seen below -
@@ -18,3 +18,5 @@ public:
 };
 
 ```
+## 2) Use varaibles like prev 
+if we are just using prev result or next behind also replace the table with variable 
