@@ -1,6 +1,6 @@
-`node`: The current node being checked.
-`minimum`: The minimum allowable value for the current node.
-`maximum`: The maximum allowable value for the current node.
+`node`: The current node being checked. \
+`minimum`: The minimum allowable value for the current node. \
+`maximum`: The maximum allowable value for the current node. 
 
 ```cpp
  boolean isValid(TreeNode node, long min, long max) {
