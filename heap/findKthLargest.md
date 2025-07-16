@@ -12,3 +12,4 @@ int findKthLargest(std::vector<int>& nums, int k) {
     return min_heap.top();
 }
 ```
+Min-heap stores K largest elemnts and remove smaller ones
