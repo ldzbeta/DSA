@@ -117,6 +117,17 @@ This is called postorder traversal
 - add extra result vector for topological order
 - in dfs before return , push back node to result
 - reverse at the end, before return to convert correct postorder traversal
+
+#### 🔴Difference between dfs in Directed and undirected
+1)Difference in Cycle Detection:
+
+| Graph Type  | Cycle Detection Logic                                                                 |
+|-------------|---------------------------------------------------------------------------------------|
+| Undirected  | If neighbor is visited and not parent → cycle                                         |
+| Directed    | Use recursion stack or 3-color method (visited + onPath)                              |
+
+2)Difference in graph implementation
+
 ---
 
 ### b) DFS Iterative (Directed)
