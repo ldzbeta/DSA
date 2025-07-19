@@ -174,3 +174,4 @@ bool hasCycleDirectedBFS(int n, vector<vector<int>>& graph) {
     return count != n;
 }
 ```
+- Replace `count` by `vector<int> topo` and `count++` by `topo.push_back(node)` to change the for Topological sort
