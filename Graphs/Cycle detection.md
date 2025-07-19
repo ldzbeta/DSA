@@ -108,7 +108,15 @@ bool hasCycleDirectedDFS(int n, vector<vector<int>>& graph) {
     return false;
 }
 ```
+### For, Topological Sort 
 
+So, in DFS:
+If you're visiting node A, you must first visit all its neighbors (courses that depend on A).
+Only after finishing all of them, you add A to the result.
+This is called postorder traversal 
+- add extra result vector for topological order
+- in dfs before return , push back node to result
+- reverse at the end, before return to convert correct postorder traversal
 ---
 
 ### b) DFS Iterative (Directed)
