@@ -1,3 +1,0 @@
-- store parent also in the stack/queue 
-- run for all components may not connected. 
-- if meeting node again which is not parent return true
