@@ -108,6 +108,16 @@ bool hasCycleDirectedDFS(int n, vector<vector<int>>& graph) {
     return false;
 }
 ```
+Just using visit will fail for:
+```markdown
+1 -> 2
+|    |
+V    V
+3 -> 4
+```
+To be cycle ,the node should be visited in same direction of path , back trach and visit.
+- instead of storing new data structure for visited for current path , we are using states.
+
 ### For, Topological Sort 
 
 So, in DFS:
