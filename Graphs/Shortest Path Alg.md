@@ -163,8 +163,9 @@ vector<vector<ll>> floyd_warshall(int n, const vector<vector<ll>> &w) {
 
 ---
 
-## 6) A* Search (heuristic search) 🧭
+## 6) Johnson’s algorithm 🧭
 Johnson’s algorithm is used to compute shortest paths between all pairs of vertices in a weighted directed graph, which may have negative edge weights, but no negative weight cycles.
+- O(VE+V2logV)
 ```cpp
 vector<vector<long long>> johnson(int n, vector<Edge> &edges) {
     int dummy = n;
@@ -224,7 +225,37 @@ vector<ll> multi_source_dijkstra(int n, const vector<int> &sources, const vector
     return dist;
 }
 ```
+---
+## 8) DAG Shortest Path (Using Topological Sort)
+- O(V + E)
+```cpp
+vector<long long> shortestPathDAG(int n, int src, const vector<vector<pair<int, long long>>> &adj) {
+    // Step 1: Topological Sort
+    stack<int> st;
+    vector<bool> visited(n, false);
+    for (int i = 0; i < n; i++) {
+        if (!visited[i]) topologicalSortUtil(i, visited, st, adj);
+    }
 
+    // Step 2: Initialize distances
+    vector<long long> dist(n, INF);
+    dist[src] = 0;
+
+    // Step 3: Process vertices in topological order
+    while (!st.empty()) {
+        int u = st.top(); st.pop();
+        if (dist[u] != INF) {
+            for (auto [v, w] : adj[u]) {
+                if (dist[v] > dist[u] + w) {
+                    dist[v] = dist[u] + w;
+                }
+            }
+        }
+    }
+
+    return dist;
+}
+```
 ---
 
 ## Path reconstruction 🔁
