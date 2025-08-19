@@ -1,19 +1,23 @@
 # Shortest Path Algorithms in C++ — Cheat Sheet 📚✨
 
 Graph representation (recommended for sparse graphs)
-- Use: `vector<vector<pair<int, long long>>> adj;`
-  - `adj[u]` contains `(v, w)`
-- Distance type: `long long` — use `const ll INF = (ll)1e18;`
-- All examples assume 0-based node indices.
+
+* Use: `vector<vector<pair<int, long long>>> adj;`
+
+  * `adj[u]` contains `(v, w)`
+* Distance type: `long long` — use `const ll INF = (ll)1e18;`
+* All examples assume 0-based node indices.
 
 ---
 
-## 1) Dijkstra (min-heap / priority_queue) 🟢
-- Use when: All edge weights are non-negative.
-- Complexity: O((V + E) log V) with binary heap.
-- Notes: Fast and standard. Store `parent` to reconstruct path.
+## 1) Dijkstra (min-heap / priority\_queue) 🟢
+
+* Use when: All edge weights are non-negative.
+* Complexity: O((V + E) log V) with binary heap.
+* Notes: Fast and standard. Store `parent` to reconstruct path.
 
 Template:
+
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -39,16 +43,19 @@ vector<ll> dijkstra(int n, int src, const vector<vector<pair<int,ll>>> &adj) {
 }
 ```
 
-Path reconstruction: keep `parent[v] = u` when relaxing; backtrack from target.
+How it works:
+Take the vertex with the smallest distance, check all its neighbors, calculate the cost from the vertex, and update if smaller. Repeat until all vertices are processed.
 
 ---
 
 ## 2) Dijkstra using set (ordered set) 🟦
-- Use when you prefer decrease-key by erasing old pair.
-- Complexity: similar, erases cost log V.
-- Stores `parent` easily.
+
+* Use when you prefer decrease-key by erasing old pair.
+* Complexity: similar, erases cost log V.
+* Stores `parent` easily.
 
 Template:
+
 ```cpp
 vector<ll> dijkstra_set(int n, int src, const vector<vector<pair<int,ll>>> &adj) {
     vector<ll> dist(n, INF);
@@ -71,14 +78,19 @@ vector<ll> dijkstra_set(int n, int src, const vector<vector<pair<int,ll>>> &adj)
 }
 ```
 
+How it works:
+Same as Dijkstra with priority queue, but uses an ordered set to always pick the vertex with the smallest distance and supports deleting outdated entries.
+
 ---
 
 ## 3) Bellman–Ford 🔶
-- Use when: Graph may have negative edges; detects negative cycles reachable from source.
-- Complexity: O(V * E).
-- Good for single-source with negative weights.
+
+* Use when: Graph may have negative edges; detects negative cycles reachable from source.
+* Complexity: O(V \* E).
+* Good for single-source with negative weights.
 
 Template:
+
 ```cpp
 pair<vector<ll>, bool> bellman_ford(int n, int src, const vector<tuple<int,int,ll>> &edges) {
     vector<ll> dist(n, INF);
@@ -93,7 +105,6 @@ pair<vector<ll>, bool> bellman_ford(int n, int src, const vector<tuple<int,int,l
         }
         if (!changed) break;
     }
-    // check negative cycle
     bool hasNegCycle = false;
     for (auto [u, v, w] : edges) {
         if (dist[u] != INF && dist[v] > dist[u] + w) {
@@ -105,14 +116,19 @@ pair<vector<ll>, bool> bellman_ford(int n, int src, const vector<tuple<int,int,l
 }
 ```
 
+How it works:
+Repeat V-1 times: go through every edge and relax it (update distance if smaller). After that, one extra pass checks for negative cycles.
+
 ---
 
 ## 4) SPFA (queue-based Bellman–Ford variant) ⚠️
-- Use when: Practical speed-ups on many graphs; but worst-case very slow.
-- Complexity: Usually fast, worst-case exponential.
-- Detects negative cycles by counting relaxations.
+
+* Use when: Practical speed-ups on many graphs; but worst-case very slow.
+* Complexity: Usually fast, worst-case exponential.
+* Detects negative cycles by counting relaxations.
 
 Template:
+
 ```cpp
 vector<ll> spfa(int n, int src, const vector<vector<pair<int,ll>>> &adj) {
     vector<ll> dist(n, INF);
@@ -127,10 +143,7 @@ vector<ll> spfa(int n, int src, const vector<vector<pair<int,ll>>> &adj) {
                 if (!inq[v]) {
                     q.push(v);
                     inq[v] = 1;
-                    if (++cnt[v] > n) {
-                        // negative cycle detected (reachable)
-                        return {}; // caller should detect/handle
-                    }
+                    if (++cnt[v] > n) return {}; // negative cycle
                 }
             }
         }
@@ -139,18 +152,23 @@ vector<ll> spfa(int n, int src, const vector<vector<pair<int,ll>>> &adj) {
 }
 ```
 
+How it works:
+Start from the source, relax edges for vertices in the queue. If a vertex gets updated, push it into the queue for future processing.
+
 ---
 
 ## 5) Floyd–Warshall (All-pairs) 🔁
-- Use when: Dense graphs or small n (n <= ~400).
-- Handles negative weights; negative cycle if dist[i][i] < 0.
-- Complexity: O(n^3).
+
+* Use when: Dense graphs or small n (n <= \~400).
+* Handles negative weights; negative cycle if dist\[i]\[i] < 0.
+* Complexity: O(n^3).
 
 Template:
+
 ```cpp
 vector<vector<ll>> floyd_warshall(int n, const vector<vector<ll>> &w) {
     const ll INF = (ll)1e18;
-    vector<vector<ll>> dist = w; // w[i][j] = weight or INF; ensure dist[i][i] = 0
+    vector<vector<ll>> dist = w;
     for (int k = 0; k < n; ++k)
         for (int i = 0; i < n; ++i)
             if (dist[i][k] != INF)
@@ -161,11 +179,17 @@ vector<vector<ll>> floyd_warshall(int n, const vector<vector<ll>> &w) {
 }
 ```
 
+How it works:
+For each intermediate vertex k, update all pairs (i, j) if going through k gives a shorter path.
+
 ---
 
 ## 6) Johnson’s algorithm 🧭
+
 Johnson’s algorithm is used to compute shortest paths between all pairs of vertices in a weighted directed graph, which may have negative edge weights, but no negative weight cycles.
-- O(VE+V2logV)
+
+* O(VE+V2logV)
+
 ```cpp
 vector<vector<long long>> johnson(int n, vector<Edge> &edges) {
     int dummy = n;
@@ -195,15 +219,18 @@ vector<vector<long long>> johnson(int n, vector<Edge> &edges) {
 }
 ```
 
-Heuristics: Manhattan for 4/8-grid, Euclidean for real coordinates, etc. Ensure admissible (never overestimates).
+How it works:
+Add a dummy node, run Bellman-Ford to compute potential values, reweight all edges to remove negatives, then run Dijkstra from every vertex.
 
 ---
 
 ## 7) Multi-source shortest paths 🔀
-- Push all sources initially with distance 0 (or connect a virtual source to all sources with 0-weight edges).
-- Useful for “distance to nearest source”.
 
-Dijkstra multi-source:
+* Push all sources initially with distance 0 (or connect a virtual source to all sources with 0-weight edges).
+* Useful for “distance to nearest source”.
+
+Template:
+
 ```cpp
 vector<ll> multi_source_dijkstra(int n, const vector<int> &sources, const vector<vector<pair<int,ll>>> &adj) {
     vector<ll> dist(n, INF);
@@ -225,23 +252,27 @@ vector<ll> multi_source_dijkstra(int n, const vector<int> &sources, const vector
     return dist;
 }
 ```
+
+How it works:
+Run Dijkstra starting with all sources at distance 0. Propagate updates to neighbors like normal Dijkstra.
+
 ---
+
 ## 8) DAG Shortest Path (Using Topological Sort)
-- O(V + E)
+
+* O(V + E)
+
 ```cpp
 vector<long long> shortestPathDAG(int n, int src, const vector<vector<pair<int, long long>>> &adj) {
-    // Step 1: Topological Sort
     stack<int> st;
     vector<bool> visited(n, false);
     for (int i = 0; i < n; i++) {
         if (!visited[i]) topologicalSortUtil(i, visited, st, adj);
     }
 
-    // Step 2: Initialize distances
     vector<long long> dist(n, INF);
     dist[src] = 0;
 
-    // Step 3: Process vertices in topological order
     while (!st.empty()) {
         int u = st.top(); st.pop();
         if (dist[u] != INF) {
@@ -256,22 +287,23 @@ vector<long long> shortestPathDAG(int n, int src, const vector<vector<pair<int, 
     return dist;
 }
 ```
+
+How it works:
+Perform topological sort, then process nodes in order, relaxing edges once since DAG has no cycles.
+
 ---
 
 ## Path reconstruction 🔁
-- Keep `parent[v] = u` when you relax an edge u→v.
-- To get path from `src` to `t`: backtrack
-  - vector<int> path;
-  - for (int cur = t; cur != -1; cur = parent[cur]) path.push_back(cur);
-  - reverse(path.begin(), path.end());
+
+Keep `parent[v] = u` when you relax an edge u→v. To get path from `src` to `t`: backtrack and reverse the sequence.
 
 ---
 
 ## Practical tips & gotchas ⚙️
-- Use `long long` for distances; INF = 1e18. Check for overflow when adding weights.
-- For dense graphs or small n, Floyd–Warshall is simple and robust.
-- For non-negative weights, prefer Dijkstra + binary heap (priority_queue).
-- For negative edges: Bellman–Ford for single-source. For all-pairs with negatives, use Johnson’s algorithm (Bellman–Ford reweighting + Dijkstra per node).
-- In performance-critical code: reserve adjacency lists, avoid expensive copies, and minimize dynamic allocations.
-- When using `set` as priority queue: be careful with duplicate (dist, node) pairs — erase prior pair before inserting new one.
-- SPFA can be fast in practice but may fail on crafted inputs (use detection via `cnt[v] > n`).
+
+* Use `long long` for distances; INF = 1e18. Check for overflow when adding weights.
+* For dense graphs or small n, Floyd–Warshall is simple and robust.
+* For non-negative weights, prefer Dijkstra + binary heap (priority\_queue).
+* For negative edges: Bellman–Ford for single-source. For all-pairs with negatives, use Johnson’s algorithm.
+* When using `set` as priority queue: erase prior pair before inserting new one.
+* SPFA can be fast in practice but may fail on crafted inputs (detect via `cnt[v] > n`).
