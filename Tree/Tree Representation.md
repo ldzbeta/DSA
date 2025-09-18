@@ -2,7 +2,7 @@
 
 Given a rooted tree and a level `k`, write a function to count the number of nodes that exist at level `k` from the root.
 
-#### Implementation in C++:
+#### Implementation in C:
 ```c
 #include <stdio.h>
 #include <stdlib.h>
@@ -50,6 +50,7 @@ int main() {
     bfs(root, k, n);
 }
 ```
+#### C++ :
 ```cpp
 vector<vector<int>> adj(n);
     for (int i = 0; i < n; i++) {
