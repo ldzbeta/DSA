@@ -3,7 +3,7 @@
 Given a rooted tree and a level `k`, write a function to count the number of nodes that exist at level `k` from the root.
 
 #### Implementation in C++:
-```cpp
+```c
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -50,7 +50,17 @@ int main() {
     bfs(root, k, n);
 }
 ```
-
+```cpp
+vector<vector<int>> adj(n);
+    for (int i = 0; i < n; i++) {
+        if (parent[i] == -1) {
+            root = i;
+        } else {
+            adj[parent[i]].push_back(i);
+        }
+    }
+// No need of child_count array
+```
 ---
 
 ### 2. Parenthesis Representation
