@@ -103,3 +103,72 @@ while (!q.empty()) {
 * **Binary tree → Undirected graph** by adding parent edges.
 * Use BFS/DFS to explore neighbors in all directions.
 * This approach avoids complex stack tracking and works reliably for distance queries.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode *left, *right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        if (!root || !target) return {};
+
+        // 1) build parent pointers
+        unordered_map<TreeNode*, TreeNode*> parent;
+        buildParents(root, nullptr, parent);
+
+        // 2) BFS from target, track visited nodes
+        queue<pair<TreeNode*,int>> q;
+        unordered_set<TreeNode*> vis;
+        q.push({target, 0});
+        vis.insert(target);
+
+        while (!q.empty()) {
+            auto [node, dist] = q.front(); q.pop();
+
+            if (dist == k) {
+                // collect this node and all other nodes at same distance in queue
+                vector<int> res;
+                res.push_back(node->val);
+                while (!q.empty()) {
+                    auto p = q.front(); q.pop();
+                    if (p.second == k) res.push_back(p.first->val);
+                }
+                return res;
+            }
+
+            // neighbors: left, right, parent
+            if (node->left && !vis.count(node->left)) {
+                vis.insert(node->left);
+                q.push({node->left, dist + 1});
+            }
+            if (node->right && !vis.count(node->right)) {
+                vis.insert(node->right);
+                q.push({node->right, dist + 1});
+            }
+            auto it = parent.find(node);
+            if (it != parent.end() && it->second && !vis.count(it->second)) {
+                vis.insert(it->second);
+                q.push({it->second, dist + 1});
+            }
+        }
+
+        return {};
+    }
+
+private:
+    void buildParents(TreeNode* node, TreeNode* par, unordered_map<TreeNode*, TreeNode*>& parent) {
+        if (!node) return;
+        parent[node] = par;
+        buildParents(node->left, node, parent);
+        buildParents(node->right, node, parent);
+    }
+};
+
+```
