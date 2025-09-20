@@ -152,11 +152,17 @@ public:
                 vis.insert(node->right);
                 q.push({node->right, dist + 1});
             }
-            auto it = parent.find(node);
+            /*auto it = parent.find(node);
             if (it != parent.end() && it->second && !vis.count(it->second)) {
                 vis.insert(it->second);
                 q.push({it->second, dist + 1});
+            }*/
+            TreeNode* par = parent[node];
+            if (par && !vis.count(par)) {
+                vis.insert(par);
+                q.push({par, dist + 1});
             }
+
         }
 
         return {};
